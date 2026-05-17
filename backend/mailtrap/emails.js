@@ -22,7 +22,7 @@ export const sendVerificationEmail = async (email, verificationToken) => {
 
         console.log(`Verification email sent successfully ${response}`);
     } catch (error) {
-        console.error(`Error sending verification email ${error.message}`);
+        console.error(`Error sending verification email ${error}`);
 
         throw new Error(`Error sending verification email: ${error}`);
     }
@@ -35,16 +35,16 @@ export const sendWelcomeEmail = async (email, name) => {
         const response = await mailtrapClient.send({
             from: sender,
             to: recipient,
-            template_uuid: "e65925d1-a9d1-4a40-ae7c-d92b37d593df",
-            template_variables: {
-                company_info_name: "Auth Company",
-                name: name,
-            },
+            subject: "Welcome!",
+            html: `
+                <h1>Welcome ${name}</h1>
+                <p>Your account has been verified successfully.</p>
+            `,
         });
 
         console.log(`Welcome email sent successfully ${response}`);
     } catch (error) {
-        console.error(`Error sending welcome email ${error.message}`);
+        console.error(`Error sending welcome email ${error}`);
 
         throw new Error(`Error sending welcome email: ${error}`);
     }
@@ -65,7 +65,7 @@ export const sendPasswordResetEmail = async (email, resetURL) => {
             category: "Password Reset",
         });
     } catch (error) {
-        console.error(`Error sending password reset email ${error.message}`);
+        console.error(`Error sending password reset email ${error}`);
 
         throw new Error(`Error sending password reset email: ${error}`);
     }
@@ -87,9 +87,7 @@ export const sendResetSuccessEmail = async (email) => {
             `Password reset success email sent successfully ${response}`,
         );
     } catch (error) {
-        console.error(
-            `Error sending password reset success email ${error.message}`,
-        );
+        console.error(`Error sending password reset success email ${error}`);
 
         throw new Error(`Error sending password reset success email: ${error}`);
     }
