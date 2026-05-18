@@ -5,19 +5,20 @@ import {
 } from "./emailTemplates.js";
 import { mailtrapClient, sender } from "./mailtrap.config.js";
 
+import { transporter } from "./nodemailer.config.js";
+
 export const sendVerificationEmail = async (email, verificationToken) => {
     const recipient = [{ email }];
 
     try {
-        const response = await mailtrapClient.send({
-            from: sender,
-            to: recipient,
+        const response = await transporter.sendMail({
+            from: `"${sender.name}" <${sender.email}>`,
+            to: email,
             subject: "Verify your email",
             html: VERIFICATION_EMAIL_TEMPLATE.replace(
                 "{verificationCode}",
                 verificationToken,
             ),
-            category: "Email Verification",
         });
 
         console.log(`Verification email sent successfully ${response}`);
@@ -32,9 +33,9 @@ export const sendWelcomeEmail = async (email, name) => {
     const recipient = [{ email }];
 
     try {
-        const response = await mailtrapClient.send({
+        const response = await transporter.sendMail({
             from: sender,
-            to: recipient,
+            to: email,
             subject: "Welcome!",
             html: `
                 <h1>Welcome ${name}</h1>
@@ -54,9 +55,9 @@ export const sendPasswordResetEmail = async (email, resetURL) => {
     const recipient = [{ email }];
 
     try {
-        const response = await mailtrapClient.send({
+        const response = await transporter.sendMail({
             from: sender,
-            to: recipient,
+            to: email,
             subject: "Reset your password",
             html: PASSWORD_RESET_REQUEST_TEMPLATE.replace(
                 "{resetURL}",
@@ -75,9 +76,9 @@ export const sendResetSuccessEmail = async (email) => {
     const recipient = [{ email }];
 
     try {
-        const response = await mailtrapClient.send({
+        const response = await transporter.sendMail({
             from: sender,
-            to: recipient,
+            to: email,
             subject: "Password Reset Successful",
             html: PASSWORD_RESET_SUCCESS_TEMPLATE,
             category: "Password Reset",
