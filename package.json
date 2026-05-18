@@ -4,7 +4,9 @@
     "description": "<h1 align=\"center\">Advanced Auth Tutorial 🔒 </h1>",
     "main": "./backend/index.js",
     "scripts": {
-        "dev": "nodemon ./backend/index.js"
+        "dev": "NODE_ENV=development nodemon backend/index.js",
+        "start": "NODE_ENV=production node backend/index.js",
+        "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
     },
     "keywords": [],
     "author": "",
@@ -13,6 +15,7 @@
     "dependencies": {
         "bcryptjs": "^3.0.3",
         "cookie-parser": "^1.4.7",
+        "cors": "^2.8.6",
         "crypto": "^1.0.1",
         "dotenv": "^17.4.2",
         "express": "^5.2.1",
