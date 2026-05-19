@@ -45,7 +45,16 @@ export const signup = async (req, res) => {
         // jwt
         generateTokenAndSetCookie(res, user._id);
 
-        await sendVerificationEmail(user.email, verificationToken);
+        // Send verification email (non-blocking)
+        try {
+            await sendVerificationEmail(user.email, verificationToken);
+        } catch (emailError) {
+            console.log(
+                "Warning: Failed to send verification email:",
+                emailError.message,
+            );
+            // Don't fail signup if email fails
+        }
 
         res.status(201).json({
             success: true,
@@ -56,6 +65,7 @@ export const signup = async (req, res) => {
             },
         });
     } catch (error) {
+        console.error("Signup error:", error);
         res.status(400).json({ success: false, message: error.message });
     }
 };
